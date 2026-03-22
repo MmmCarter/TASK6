@@ -12,6 +12,12 @@ class FreeStyleObj {
       this.angularSpeed = .07;
       this.context =context;
 
+      // NEW: mic-driven properties
+      this.micVolume = 0;
+      this.waveHeight = 5;
+
+      // NEW: for animation
+      this.yDirection = 1;
     }
   
     display() {
