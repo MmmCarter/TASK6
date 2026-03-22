@@ -1,9 +1,4 @@
 window.onload = go_all_stuff;
-window.onload = getMicrophoneInput;
-
-function getMicrophoneInput() {
-  console.log("here we are "); 
-}
 
 function go_all_stuff(){
 console.log("go");
@@ -43,7 +38,8 @@ drawingBoardB.display();
 
 let drawingBoardC = new DrawingBoard(theCanvases[2],theContexts[2],theCanvases[2].id);
 //add a freestyle object to canvas C
-drawingBoardC.addObj(new FreeStyleObj(10,100,300,"#CF9FFF","#CF9FFF", drawingBoardC.context))
+let freeStyleObj = new FreeStyleObj(10,100,300,"#CF9FFF","#CF9FFF", drawingBoardC.context);
+drawingBoardC.addObj(freeStyleObj);
 drawingBoardC.display();
 
 let drawingBoardD = new DrawingBoard(theCanvases[3],theContexts[3],theCanvases[3].id);
@@ -63,20 +59,35 @@ function animationLoop(){
     window.requestAnimationFrame(animationLoop);
 }
 
+getMicrophoneInput();
+
 async function getMicrophoneInput() {
   console.log("here we are ");
 
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  let audioContext = new AudioContext(); //using the web audio library
+  let audioContext = new AudioContext();
+
   try {
-    //returns a MediaStreamAudioSourceNode.
-    let audioStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
-    // console.log(audioStream)
-    //pass the microphone input to the web audio API
+    let audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     let microphoneIn = audioContext.createMediaStreamSource(audioStream);
-    console.log(microphoneIn);
+
+    // TASK 3: connect analyser to read volume
+    let analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    microphoneIn.connect(analyser);
+
+    let dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    // read mic volume every frame and pass to the freestyle object
+    function readMic() {
+      analyser.getByteFrequencyData(dataArray);
+      let sum = dataArray.reduce((a, b) => a + b, 0);
+      let average = sum / dataArray.length;
+      freeStyleObj.micVolume = average / 255; // normalized 0 to 1
+      requestAnimationFrame(readMic);
+    }
+    readMic();
+
   } catch (err) {
     console.error("Error accessing the microphone: ", err);
   }
