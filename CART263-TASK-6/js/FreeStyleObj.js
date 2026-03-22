@@ -29,9 +29,13 @@ class FreeStyleObj {
     }
 
     update(){
-        //update freestyle
-       // console.log("free style update")
-       // this.x+=1;
+      this.y += this.yDirection * 0.5;
+      if (this.y > 200 || this.y < 50) {
+        this.yDirection *= -1; // reverse direction
+      }
+
+      // MIC: volume affects wave height and angular speed
+      this.waveHeight = 5 + this.micVolume * 30;      // louder = taller waves
+      this.angularSpeed = 0.07 + this.micVolume * 0.1; // louder = faster waves
     }
   }
-  

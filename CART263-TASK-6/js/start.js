@@ -1,4 +1,9 @@
 window.onload = go_all_stuff;
+window.onload = getMicrophoneInput;
+
+function getMicrophoneInput() {
+  console.log("here we are "); 
+}
 
 function go_all_stuff(){
 console.log("go");
@@ -58,7 +63,24 @@ function animationLoop(){
     window.requestAnimationFrame(animationLoop);
 }
 
+async function getMicrophoneInput() {
+  console.log("here we are ");
 
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioContext = new AudioContext(); //using the web audio library
+  try {
+    //returns a MediaStreamAudioSourceNode.
+    let audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    // console.log(audioStream)
+    //pass the microphone input to the web audio API
+    let microphoneIn = audioContext.createMediaStreamSource(audioStream);
+    console.log(microphoneIn);
+  } catch (err) {
+    console.error("Error accessing the microphone: ", err);
+  }
+}
 
 /** TASK 1:(Drawing Board A) - 
  *  1: animate the circle object(s) somehow/anyhow.. (there may be more than one)
