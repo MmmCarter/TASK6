@@ -10,6 +10,11 @@ class CircularObj {
     this.startAngle = 0;
     this.endAngle = Math.PI * 2; //full rotation
     this.context = context;
+
+    //target position for mouse follow animation
+    this.targetX = x;
+    this.targetY = y;
+    this.speed = 0.05; //easing speed (0~1)
   }
 
   display() {
@@ -34,5 +39,7 @@ class CircularObj {
     //update circle
     //this.x += 1;
     //console.log("circle update");
+    this.x += (this.targetX - this.x) * this.speed;
+    this.y += (this.targetY - this.y) * this.speed;
   }
 }
