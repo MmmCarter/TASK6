@@ -27,10 +27,12 @@ class DrawingBoard {
     if (this.drawingBoardId === "partA") {
       console.log("in A")
 
+      //Update target position of all circles to follow mouse
       for (let i = 0; i < this.objectsOnCanvas.length; i++) {
         this.objectsOnCanvas[i].targetX = this.mouseOffsetX;
         this.objectsOnCanvas[i].targetY = this.mouseOffsetY;
       }
+
     }
     if (this.drawingBoardId === "partB") {
       console.log("in B")
@@ -54,6 +56,16 @@ class DrawingBoard {
     //you can remove the console.logs /// 
     if (this.drawingBoardId === "partA") {
       console.log("in A")
+
+      //Add a new circle at click position
+      let radius = Math.floor(Math.random() * 25 + 10); //random size
+      let r = Math.floor(Math.random() * 206 + 50);
+      let g = Math.floor(Math.random() * 206 + 50);
+      let b = Math.floor(Math.random() * 206 + 50);
+      let color = `rgb(${r},${g},${b})`; //random color
+      let newCircle = new CircularObj(this.mouseOffsetX, this.mouseOffsetY, radius, color, "#FFFFFF", this.context);
+      this.addObj(newCircle);
+
     }
     if (this.drawingBoardId === "partB") {
       console.log("in B")
@@ -79,8 +91,8 @@ class DrawingBoard {
 
   /* method to add animate objects on canvas */
   animate() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     for (let i = 0; i < this.objectsOnCanvas.length; i++) {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
       this.objectsOnCanvas[i].update();
       this.objectsOnCanvas[i].display();
     }
