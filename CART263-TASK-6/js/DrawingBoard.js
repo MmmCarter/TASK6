@@ -14,6 +14,12 @@ class DrawingBoard {
     this.canvas.addEventListener("mousemove", function (e) {
       self.overCanvas(e);
     });
+
+    // right click to remove circle in partA
+    this.canvas.addEventListener("contextmenu", function (e) {
+      e.preventDefault(); //prevent default right-click menu
+      self.rightClickCanvas(e);
+    });
   }
 
   overCanvas(e) {
@@ -77,6 +83,33 @@ class DrawingBoard {
       console.log("in D")
     }
   }
+
+  rightClickCanvas(e) {
+    this.canvasBoundingRegion = this.canvas.getBoundingClientRect();
+    let mx = parseInt(e.clientX - this.canvasBoundingRegion.x);
+    let my = parseInt(e.clientY - this.canvasBoundingRegion.y);
+
+    if (this.drawingBoardId === "partA") {
+      //remove the circle closest to right click position
+      let closestIndex = -1;
+      let closestDistance = Infinity;
+
+      for (let i = 0; i < this.objectsOnCanvas.length; i++) {
+        let obj = this.objectsOnCanvas[i];
+        let distance = Math.sqrt((obj.x - mx) ** 2 + (obj.y - my) ** 2);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
+        }
+      }
+      if (closestIndex !== -1) {
+        this.objectsOnCanvas = this.objectsOnCanvas.filter(function (obj, index) {
+          return index !== closestIndex;
+        });
+      }
+    }
+  }
+
   /* method to add obj to canvas */
   addObj(objToAdd) {
     this.objectsOnCanvas.push(objToAdd);
