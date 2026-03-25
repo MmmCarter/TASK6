@@ -21,6 +21,31 @@ class VideoObj {
       self.userProvidedBlur = blurInput.value;
       console.log(self.userProvidedBlur);
     });
+  
+   // sepia
+    let filterButton_sepia = document.getElementById("filter_button_sepia");
+    let sepiaInput = document.getElementById("sepianum");
+    this.userProvidedSepia = 0;
+    filterButton_sepia.addEventListener("click", function () {
+      self.userProvidedSepia = sepiaInput.value;
+    });
+
+    // hue-rotate
+    let filterButton_hue = document.getElementById("filter_button_hue");
+    let hueInput = document.getElementById("huenum");
+    this.userProvidedHue = 0;
+    filterButton_hue.addEventListener("click", function () {
+      self.userProvidedHue = hueInput.value;
+    });
+
+    // invert
+    let filterButton_invert = document.getElementById("filter_button_invert");
+    let invertInput = document.getElementById("invertnum");
+    this.userProvidedInvert = 0;
+    filterButton_invert.addEventListener("click", function () {
+      self.userProvidedInvert = invertInput.value;
+    });
+
   }
 
   display() {
