@@ -46,8 +46,8 @@ class DrawingBoard {
     if (this.drawingBoardId === "partC") {
       console.log("in C")
     }
-    if (this.drawingBoardId === "partD") {
-      console.log("in D")
+    if(this.drawingBoardId === "partD"){
+      this.objectsOnCanvas[0].updatePositionRect(this.mouseOffsetX, this.mouseOffsetY);
     }
   }
 
@@ -79,8 +79,10 @@ class DrawingBoard {
     if (this.drawingBoardId === "partC") {
       console.log("in C")
     }
-    if (this.drawingBoardId === "partD") {
-      console.log("in D")
+     if(this.drawingBoardId === "partD"){
+      // pick a random color each click
+      let randomColor = "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6,"0");
+      this.objectsOnCanvas[0].changeColor(randomColor);
     }
   }
 
